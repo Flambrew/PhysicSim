@@ -2,31 +2,24 @@ package src;
 
 public class Main {
     public static void main(String[] args) {
-
-        // GRAPH PARAMETERS
         int x = 0, y = 0;
-        int width = 10, height = 10, precision = 20; // n>0
+        int width = 10, height = 10, precision = 25; // n > 0
+        double angle = 45; // 0 < n < 90
+        double velocity = 10; // n > 0
 
-        // GRAPH
-        double[][] axes = new double[2][precision];
-        for (int i = 0; i < precision; i++) {
-            axes[0][i] = x + width * i / (double)(precision - 1);
-            axes[1][i] = y + height * i / (double)(precision - 1);
-        }
+        double[][] axes = new double[4 * precision + 2][2];
+        for (int i = 0; i < 4 * precision + 1; i++)
+            axes[i] = new double[] { x + width * i / (4 * precision + 1.), y + height * i / (4 * precision + 1.) };
+            
+        boolean[][] greater = new boolean[axes.length][axes.length];
+        for (int i = 0; i < greater.length; i++)
+            for (int j = 0; j < greater.length; j++)
+                greater[greater.length - i - 1][j] = 0 > 4.9 * Math.pow(axes[j][0] / velocity / Math.cos(angle), 2)
+                        - axes[j][0] * Math.tan(angle) + axes[i][1];
 
-        // FUNCTION VALUES
-        int angle = 45; // 0<n<90
-        int velocity = 10; // n>0
-
-        
+        draw(greater);
     }
 
-
-
-    // 0 = (2.21359x/vcosa)^2 - xtana + y
-    // explained at: https://cdn.discordapp.com/attachments/816411343066366002/1067678178178502729/image.png
-
-    // DRAW
     public static void draw(boolean[][] graph) {
         boolean[][] edges = getEdges(graph);
         for (int i = 0; i < edges.length; i += 4, System.out.println())
