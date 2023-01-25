@@ -1,11 +1,13 @@
 package src;
 
 public class PhysicSim {
+
+    private static int x = 0, y = 0;
+    private static int width = 10, height = 10, precision = 25, tolerance = 0; // n >= 0
+    private static double angle = 45; // 0 <= n <= 90
+    private static double velocity = 10; // n >= 0
+
     public static void main(String[] args) {
-        int x = 0, y = 0;
-        int width = 10, height = 10, precision = 25; // n > 0
-        double angle = 45; // 0 < n < 90
-        double velocity = 10; // n > 0
         double[][] axes = new double[4 * precision + 2][2];
         boolean[][] math = new boolean[axes.length][axes.length];
 
@@ -44,14 +46,14 @@ public class PhysicSim {
     }
 
     public static boolean AND(boolean[][] graph) {
-        boolean allTrue = true, allFalse = true;
+        int allTrue = 0, allFalse = 0;
         for (boolean[] bs : graph)
             for (boolean b : bs)
                 if (b)
-                    allFalse = false;
+                    allFalse++;
                 else
-                    allTrue = false;
-        return allTrue || allFalse;
+                    allTrue++;
+        return allTrue <= tolerance || allFalse <= tolerance;
     }
 
     public static char parseToChar(boolean[][] graph) {
